@@ -13,9 +13,22 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
+        return $this->render('AppBundle:Default:index.html.twig');
+    }
+
+    /**
+     * @Route("/secret", name="secret")
+     */
+    public function secretAction(Request $request)
+    {
+        return $this->render('AppBundle:Default:secret.html.twig');
+    }
+
+    /**
+     * @Route("/error403", name="error403")
+     */
+    public function error403Action(Request $request)
+    {
+        return $this->render('AppBundle:Default:error403.html.twig');
     }
 }
