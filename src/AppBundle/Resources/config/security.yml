@@ -1,0 +1,30 @@
+security:
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    - { name: 'admin@mail.com', password: '1', roles: 'ROLE_ADMIN' }
+                    - { name: 'user@mail.com', password: '1', roles: 'ROLE_USER' }
+
+    firewalls:
+        main:
+            pattern: ^/
+            anonymous: ~
+            form_login:
+                login_path: authorization
+                check_path: authorization
+            logout:
+                path: logout
+                target: /
+            provider: in_memory
+
+    access_control:
+        - { path: ^/secret, roles: ROLE_ADMIN }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+    access_denied_url:
+        /error403

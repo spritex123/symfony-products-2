@@ -1,0 +1,14 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block menu %}
+    <div class="green">
+        <h2>Default:index.html.twig</h2>
+        <a href="{{ path('homepage') }}">Home</a>
+        <a href="{{ path('authorization') }}">Authorization</a>
+        <a href="{{ path('registration') }}">Registration</a>
+        <a href="{{ path('secret') }}">Secret</a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('logout') }}" class="pink">Logout</a>
+        {% endif %}
+    </div>
+{% endblock %}
