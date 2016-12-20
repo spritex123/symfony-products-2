@@ -4,12 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+//use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name = "user")
+ * @ORM\HasLifecycleCallbacks
  */
-class User
+class User// implements UserInterface
 {
     /**
      * @ORM\Id
@@ -38,7 +40,7 @@ class User
     /**
      * @ORM\Column(type = "string", length = 255)
      */
-    protected $role;
+    protected $role = 'ROLE_USER';
 
     /**
      * @ORM\Column(type = "string", length = 255)
@@ -49,11 +51,15 @@ class User
     protected $name;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type = "datetime")
      */
     protected $created;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type = "datetime")
      */
     protected $updated;
@@ -61,7 +67,7 @@ class User
     /**
      * @ORM\Column(type = "boolean")
      */
-    protected $enabled;
+    protected $enabled = false;
 
     /**
      * @ORM\Column(type = "string", length = 32)
@@ -179,11 +185,17 @@ class User
      * Set created
      *
      * @param \DateTime $created
+     * @ORM\PrePersist
      * @return User
      */
     public function setCreated($created)
     {
-        $this->created = $created;
+        /*$this->created = $created;
+
+        return $this;*/
+        if (!$this->created) {
+            $this->created = new \DateTime();
+        }
 
         return $this;
     }
@@ -202,11 +214,17 @@ class User
      * Set updated
      *
      * @param \DateTime $updated
+     * @ORM\PrePersist
      * @return User
      */
     public function setUpdated($updated)
     {
-        $this->updated = $updated;
+        /*$this->updated = $updated;
+
+        return $this;*/
+        if (!$this->updated) {
+            $this->updated = new \DateTime();
+        }
 
         return $this;
     }
@@ -300,7 +318,7 @@ class User
     /**
      * Get products
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProducts()
     {

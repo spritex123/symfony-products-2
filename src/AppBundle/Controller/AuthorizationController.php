@@ -14,7 +14,7 @@ class AuthorizationController extends Controller
     /**
      * @Route("/authorization", name="authorization")
      */
-    public function authorizationAction(Request $request)
+    public function indexAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 

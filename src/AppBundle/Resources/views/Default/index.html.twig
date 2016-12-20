@@ -9,6 +9,7 @@
         <a href="{{ path('secret') }}">Secret</a>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <a href="{{ path('logout') }}" class="pink">Logout</a>
+            <b>{{ app.user }}</b>
         {% endif %}
     </div>
 {% endblock %}

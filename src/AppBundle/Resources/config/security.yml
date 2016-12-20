@@ -4,11 +4,16 @@ security:
         Symfony\Component\Security\Core\User\User: plaintext
 
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
         in_memory:
             memory:
                 users:
                     - { name: 'admin@mail.com', password: '1', roles: 'ROLE_ADMIN' }
                     - { name: 'user@mail.com', password: '1', roles: 'ROLE_USER' }
+        user_db:
+            entity: { class: AppBundle\Entity\User, property: email }
 
     firewalls:
         main:
@@ -20,7 +25,7 @@ security:
             logout:
                 path: logout
                 target: /
-            provider: in_memory
+            provider: chain_provider
 
     access_control:
         - { path: ^/secret, roles: ROLE_ADMIN }
