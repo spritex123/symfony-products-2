@@ -4,14 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-//use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name = "user")
  * @ORM\HasLifecycleCallbacks
  */
-class User// implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -23,30 +23,30 @@ class User// implements UserInterface
     /**
      * @ORM\Column(type = "string", length = 255)
      *
-     * @Assert\NotBlank(groups = {"registration", "authorization"})
+     * @Assert\NotBlank(groups = {"registration", "authorization", "change"})
      * @Assert\Email(groups = {"registration", "authorization"})
-     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration", "authorization"})
+     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration", "authorization", "change"})
      */
     protected $email;
 
     /**
      * @ORM\Column(type = "string", length = 255)
      *
-     * @Assert\NotBlank(groups = {"registration", "authorization"})
-     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration", "authorization"})
+     * @Assert\NotBlank(groups = {"registration", "authorization", "change"})
+     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration", "authorization", "change"})
      */
     protected $password;
 
     /**
      * @ORM\Column(type = "string", length = 255)
      */
-    protected $role = 'ROLE_USER';
+    protected $roles = 'ROLE_USER';
 
     /**
      * @ORM\Column(type = "string", length = 255)
      *
-     * @Assert\NotBlank(groups = {"registration"})
-     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration"})
+     * @Assert\NotBlank(groups = {"registration", "change"})
+     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"registration", "change"})
      */
     protected $name;
 
@@ -78,6 +78,48 @@ class User// implements UserInterface
      * @ORM\OneToMany(targetEntity = "Product", mappedBy = "user")
      **/
     protected $products;
+
+    protected $username;
+    protected $salt;
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return User
+     */
+    public function setUsername($email)
+    {
+        $this->username = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+    }
 
     /**
      * Get id
@@ -136,26 +178,27 @@ class User// implements UserInterface
     }
 
     /**
-     * Set role
+     * Set roles
      *
-     * @param string $role
+     * @param string $roles
      * @return User
      */
-    public function setRole($role)
+    public function setRoles($roles)
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * Get role
+     * Get roles
      *
      * @return string
      */
-    public function getRole()
+    public function getRoles()
     {
-        return $this->role;
+        //return $this->roles;
+        return array('ROLE_USER');
     }
 
     /**
@@ -190,12 +233,7 @@ class User// implements UserInterface
      */
     public function setCreated($created)
     {
-        /*$this->created = $created;
-
-        return $this;*/
-        if (!$this->created) {
-            $this->created = new \DateTime();
-        }
+        $this->created = new \DateTime();
 
         return $this;
     }
@@ -215,16 +253,12 @@ class User// implements UserInterface
      *
      * @param \DateTime $updated
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @return User
      */
     public function setUpdated($updated)
     {
-        /*$this->updated = $updated;
-
-        return $this;*/
-        if (!$this->updated) {
-            $this->updated = new \DateTime();
-        }
+        $this->updated = new \DateTime();
 
         return $this;
     }

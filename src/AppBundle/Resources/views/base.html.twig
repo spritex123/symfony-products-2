@@ -48,10 +48,9 @@
                 border-spacing: 0;
             }
 
-            body { margin: 1em; font-family: "Consolas", Sans-Serif; }
+            body { margin: 1em auto; min-width: 800px; max-width: 800px; font-family: "Consolas", Sans-Serif; }
 
             div { padding: 1em; }
-            div.min-width { min-width: 800px; }
 
             h1, h2, h3, h4, h5, h6 { padding: 15px 0px; font-weight: bold; }
 
@@ -65,10 +64,18 @@
             a { padding: 5px; background: #fff59d; }
             a:hover { background: #ffcc80; }
 
+            a.table { padding: 1px; background: none; color: blue; }
+            a.table:hover { background: #f48fb1; }
+
             p { margin: 5px 0; }
 
             b { font-weight: bold; }
             i { font-style: oblique; }
+
+            table { width: 100%; }
+            table, tr, td { border: 3px solid black; }
+            td { padding: 5px; vertical-align: middle; }
+
 
             .red    { background: #ef9a9a; }
             .green  { background: #a5d6a7; }
@@ -82,7 +89,7 @@
     {% endblock %}
 </head>
 <body>
-    <div class="min-width red">
+    <div class="red">
         <h1>::base.html.twig</h1>
 
         {% block menu %}{% endblock %}

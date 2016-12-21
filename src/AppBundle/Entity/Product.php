@@ -21,28 +21,33 @@ class Product
     /**
      * @ORM\Column(type = "string", length = 255)
      *
-     * @Assert\NotBlank()
-     * @Assert\Length(max = 255, maxMessage = "Max Length 255")
+     * @Assert\NotBlank(groups = {"product"})
+     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"product"})
      */
     protected $name;
 
     /**
      * @ORM\Column(type = "string", length = 255)
      *
-     * @Assert\NotBlank()
-     * @Assert\Length(max = 255, maxMessage = "Max Length 255")
+     * @Assert\NotBlank(groups = {"product"})
+     * @Assert\Length(max = 255, maxMessage = "Max Length 255", groups = {"product"})
      */
     protected $description;
 
     /**
      * @ORM\Column(type = "string", length = 255)
+     *
+     * @Assert\NotBlank(groups = {"product"})
      */
     protected $thumbnail;
 
     /**
-     * @ORM\Column(type = "decimal", scale = 2)
+     * @ORM\Column(type = "decimal", precision = 10, scale = 2)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups = {"product"})
+     * @Assert\Type(type="numeric", groups = {"product"})
+     * @ASSert\GreaterThanOrEqual(value = 0, groups = {"product"})
+     * @Assert\LessThanOrEqual(value = 99999999.99, groups = {"product"})
      */
     protected $price;
 
@@ -171,7 +176,7 @@ class Product
     /**
      * Get user
      *
-     * @return \AppBundle\Entity\User 
+     * @return \AppBundle\Entity\User
      */
     public function getUser()
     {

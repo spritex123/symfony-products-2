@@ -16,9 +16,9 @@ class RegistrationController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $registration = new User();
+        $user = new User();
 
-        $form = $this->createForm(RegistrationType::class, $registration);
+        $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
@@ -34,25 +34,16 @@ class RegistrationController extends Controller
                 }
             }
 
-            $registration->setToken('Token');
-            //$user = new User();
-            /*$user->setEmail($form->getData()->getEmail());
-            $user->setPassword($form->getData()->getPassword());
-            $user->setRole('ROLE_USER');
-            $user->setName($form->getData()->getName());
-            $date = new \DateTime('now');
-            $user->setCreated($date);
-            $user->setUpdated($date);
-            $user->setEnabled(false);
-            $user->setToken(1);*/
+            $user->setEmail(mb_strtolower($user->getEmail()));
+            $user->setToken('Token');
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($registration);
+            $em->persist($user);
             $em->flush();
 
             return $this->redirect($this->generateUrl('homepage'));
         }
 
-        return $this->render('AppBundle:registration:index.html.twig', ['form' => $form->createView()]);
+        return $this->render('AppBundle:Registration:index.html.twig', ['form' => $form->createView()]);
     }
 }
